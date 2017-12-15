@@ -1,7 +1,6 @@
 #include "pipe_networking.h"
 
-#define TO_SERVER_FIFO "server_very_secure_fifo"
-#define TO_CLIENT_FIFO "client_super_secure_fifo"
+#define TO_SERVER_FIFO "server_very_secure_fifo.pipe"
 
 char server_side_buffer[HANDSHAKE_BUFFER_SIZE];
 char client_side_buffer[HANDSHAKE_BUFFER_SIZE];
@@ -60,7 +59,9 @@ int server_handshake(int *to_client) {
   =========================*/
 int client_handshake(int *to_server) {
 
-    char *to_client_fifo = TO_CLIENT_FIFO;
+    char to_client_fifo[HANDSHAKE_BUFFER_SIZE];
+
+    sprintf(to_client_fifo, "super_secure_%d.pipe", getpid());
 
     // Create private fifo
     if (mkfifo(to_client_fifo, 0644) == -1) {

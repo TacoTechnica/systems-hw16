@@ -19,5 +19,4 @@ clean:
 	rm -f *.o
 	rm -f *~
 	rm -f client server
-	rm -f server_very_secure_fifo
-	rm -f client_super_secure_fifo
+	rm *.pipe
