@@ -11,7 +11,7 @@
 #define NETWORKING_H
 #define ACK "HOLA"
 
-#define HANDSHAKE_BUFFER_SIZE 10
+#define HANDSHAKE_BUFFER_SIZE 128
 #define BUFFER_SIZE 1000
 
 int server_handshake(int *to_client);

@@ -3,10 +3,8 @@
 #define TO_SERVER_FIFO "server_very_secure_fifo"
 #define TO_CLIENT_FIFO "client_super_secure_fifo"
 
-#define BUFFER_SIZE 128
-
-char server_side_buffer[BUFFER_SIZE];
-char client_side_buffer[BUFFER_SIZE];
+char server_side_buffer[HANDSHAKE_BUFFER_SIZE];
+char client_side_buffer[HANDSHAKE_BUFFER_SIZE];
 
 /*=========================
     server_handshake
@@ -29,13 +27,13 @@ int server_handshake(int *to_client) {
 
     // Wait for client to send us their fifo
     printf("Server waiting for client to send us their fifo...\n");
-    read(from_client, server_side_buffer, BUFFER_SIZE);
+    read(from_client, server_side_buffer, HANDSHAKE_BUFFER_SIZE);
     printf("Server received client fifo! Fifo value: \"%s\" \n", server_side_buffer);
 
     // Send data back to client for confirmation
     *to_client = open(server_side_buffer, O_WRONLY);
 
-    write(*to_client, server_side_buffer, BUFFER_SIZE); // 
+    write(*to_client, server_side_buffer, HANDSHAKE_BUFFER_SIZE); // 
     printf("wtf server\n");
     // STOP AFTER THIS?
 
@@ -79,7 +77,7 @@ int client_handshake(int *to_server) {
     }
     // Send our client fifo to server
     printf("Client sends fifo to server\n");
-    write(*to_server, to_client_fifo, BUFFER_SIZE);//strlen(to_client_fifo));
+    write(*to_server, to_client_fifo, HANDSHAKE_BUFFER_SIZE);//strlen(to_client_fifo));
     // (now server waits for our fifo name)
 
     // Now, we should get our data back from the server as
@@ -89,7 +87,7 @@ int client_handshake(int *to_server) {
     // Actually open our client's receiving-data file
     int from_server = open(to_client_fifo, O_RDONLY);
     // STOPS AFTER THIS ?
-    read(from_server, client_side_buffer, BUFFER_SIZE);//strlen(to_client_fifo));
+    read(from_server, client_side_buffer, HANDSHAKE_BUFFER_SIZE);//strlen(to_client_fifo));
     printf("wtf client\n");
 
     printf("Client received server data! Received: \"%s\"", client_side_buffer);
